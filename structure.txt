@@ -1,0 +1,53 @@
+.
+├── .env
+├── .env.example
+├── .htaccess
+├── app
+│   ├── Controllers
+│   │   ├── Controller.php
+│   │   └── HomeController.php
+│   ├── Core
+│   │   └── App.php
+│   ├── Helpers
+│   │   └── functions.php
+│   ├── Middleware
+│   │   ├── AuthMiddleware.php
+│   │   ├── CsrfMiddleware.php
+│   │   └── MiddlewareInterface.php
+│   ├── Models
+│   │   ├── Model.php
+│   │   └── User.php
+│   ├── Services
+│   └── Views
+│       ├── home
+│       │   ├── contact.php
+│       │   ├── contact_content.php
+│       │   ├── index.php
+│       │   └── index_content.php
+│       └── layouts
+│           └── main.php
+├── composer.json
+├── composer.lock
+├── config
+│   ├── app.php
+│   └── database.php
+├── database
+│   └── migrations
+├── initree.sh
+├── public
+│   ├── .htaccess
+│   ├── assets
+│   │   ├── css
+│   │   ├── img
+│   │   └── js
+│   └── index.php
+├── routes
+│   └── web.php
+├── serve.sh
+├── storage
+│   ├── cache
+│   ├── logs
+│   └── sessions
+└── structure.txt
+
+24 directories, 27 files

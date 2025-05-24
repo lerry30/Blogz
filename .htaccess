@@ -1,0 +1,34 @@
+# Disable directory listing
+Options -Indexes
+
+# Follow symbolic links
+Options +FollowSymLinks
+
+# Set default character set
+AddDefaultCharset UTF-8
+
+# Deny access to sensitive files
+<FilesMatch "(\.(env|gitignore|htaccess|htpasswd|ini|log|yaml|yml|config|lock|sh|bash|fla|psd|log|ini|bat|csv|json|sql|md|template|twig|env\.example)|composer\.json|composer\.lock)$">
+    Require all denied
+</FilesMatch>
+
+# Prevent viewing of .env or config files
+<FilesMatch "^\.">
+    Require all denied
+</FilesMatch>
+
+# Deny access to dot files
+RedirectMatch 403 /\..*$
+
+# Prevent PHP execution in uploads directory (if you have one)
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteRule ^storage/uploads/.*\.php$ - [F,L]
+</IfModule>
+
+# Redirect all requests to the public folder
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteRule ^$ public/ [L]
+    RewriteRule (.*) public/$1 [L]
+</IfModule>

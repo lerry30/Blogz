@@ -1,0 +1,32 @@
+{
+    "name": "lerry/blogz",
+    "description": "Blog Posting Website",
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "John Lerry Samson",
+            "email": "johnlerryramossamson@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.4",
+        "vlucas/phpdotenv": "^5.5",
+        "filp/whoops": "^2.15",
+        "phpmailer/phpmailer": "^6.8"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/"
+        },
+        "files": [
+            "app/Helpers/functions.php"
+        ]
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true,
+    "config": {
+        "optimize-autoloader": true,
+        "sort-packages": true
+    }
+}
