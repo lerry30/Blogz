@@ -1,16 +1,16 @@
-const slide = () => {
+const slider = () => {
   const logo = document.querySelector('.logo');
-  const sidebar = document.querySelector('header nav ul');
+  const sidebar = document.querySelector('.slider');
   logo.addEventListener('click', () => {
-    if(sidebar.classList.contains('closed')) {
+    if(sidebar.classList.contains('close')) {
       sidebar.style.transform = 'translateX(0)';
-      sidebar.classList.remove('closed');
+      sidebar.classList.remove('close');
     } else {
       sidebar.style.transform = 'translateX(-100%)';
-      sidebar.classList.add('closed');
+      sidebar.classList.add('close');
     }
 //    alert("status: " + sidebar.classList.contains('closed'));
   });
 }
 
-export default slide;
+export default slider;

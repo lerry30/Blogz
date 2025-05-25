@@ -2,19 +2,19 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title><?= $title ?? 'Bolgz' ?></title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">                                    <title><?= $title ?? 'Bolgz' ?></title>
   <link href="/assets/css/gen.css" rel="stylesheet">
-  <link href="/assets/css/main.css" rel="stylesheet">
-  <script type="module" src="/assets/js/layouts/main.js" defer></script>
+  <link href="/assets/css/dashboard.css" rel="stylesheet">
+  <script type="module" src="/assets/js/layouts/dashboard.js" defer></script>
 </head>
 <body>
   <header>
     <nav>
       <?php require_once __DIR__."/../components/logo.php"; ?>
       <ul class="slider close">
-        <li><a href="/users/create">Signup</a></li>
-        <li><a href="/users/login">Signin</a></li>
+        <li><a href="">Dashboard</a></li>
+        <li><a href="">My Posts</a></li>
+        <li><a href="">New Post</a></li>
       </ul>
     </nav>
   </header>
@@ -35,12 +35,5 @@
     <!-- Content will be injected here -->
     <?php require_once __DIR__."/../$content_path.php"; ?>
   </div>
-
-  <!-- Footer -->
-  <footer>
-    <div>
-      <p>&copy; <?= date('Y') ?> Blogz. All rights reserved.</p>
-    </div>
-  </footer>
 </body>
 </html>

@@ -1,0 +1,23 @@
+.user-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding-bottom: 2rem;
+}
+
+.user-form form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.user-form .col {
+  margin-bottom: 0.2rem;
+}
+
+.btn {
+  background-color: #100a87;
+  color: white;
+  border: none;
+  outline: none;
+}
