@@ -26,6 +26,8 @@ $routes['GET']['/users/logout'] = 'UserController@logout';
 //dashboard
 $routes['GET']['/dashboards/user'] = 'DashboardController@user';
 
+$routes['GET']['/posts/create'] = 'PostController@create';
+
 // You can also define routes using closures for simple functionality
 //$routes['GET']['/hello'] = function() {
 //    echo "Hello World!";

@@ -3,7 +3,10 @@
 
   if(!Auth::isLoggedIn()) {
     redirect('/users/login');
+    die();
   }
+
+  $user = Auth::getUser();
 ?>
 
 <!DOCTYPE html>
@@ -20,9 +23,9 @@
     <nav>
       <?php require_once __DIR__."/../components/logo.php"; ?>
       <ul class="slider close">
-        <li><a href="">Dashboard</a></li>
+        <li><a href="/dashboard/user">Dashboard</a></li>
         <li><a href="">My Posts</a></li>
-        <li><a href="">New Post</a></li>
+        <li><a href="/posts/create">New Post</a></li>
         <li><a href="/users/logout">Logout</a></li>
       </ul>
     </nav>
