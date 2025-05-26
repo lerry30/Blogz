@@ -151,3 +151,11 @@ if(!function_exists('logger')) {
     file_put_contents($logFile, $logMessage, FILE_APPEND);
   }
 }
+
+if(!function_exists('isLoggedin')) {
+  function isLoggedin() {
+    return isset($_SESSION['user_id']) &&
+           !empty($_SESSION['user_id']) &&
+           is_numeric($_SESSION['user_id']);
+  }
+}

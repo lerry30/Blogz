@@ -1,3 +1,9 @@
+<?php
+  if(!isLoggedin()) {
+    redirect('/users/login');
+  }
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>

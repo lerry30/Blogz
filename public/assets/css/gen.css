@@ -26,6 +26,7 @@ body {
 a {
   text-decoration: none;
   color: #fffb;
+  display: inline-block;
 }
 
 li {
@@ -79,8 +80,8 @@ header {
   gap: 0.5rem;
 }
 
-.slider li {
+.slider li a {
+  width: 100%;
   padding: 0.6rem;
   background-color: #1115;
 }
-
