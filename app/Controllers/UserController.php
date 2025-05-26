@@ -72,7 +72,7 @@ class UserController extends Controller {
         ]);
 
         $user = $model->find($id);
-        Auth::saveUserData($data);
+        Auth::saveUserData($user);
       }
       $this->redirect('/?success='.urlencode('You\'re now successfully registered'));
     } catch(InvalidArgumentException $e) {
