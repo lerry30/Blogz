@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Models\User;
 use App\Helpers\InputValidator;
+use App\Helpers\Auth;
 use Exception;
 use InvalidArgumentException;
 
@@ -126,6 +127,12 @@ class UserController extends Controller {
       $this->redirect('/users/login?error='.urlencode('Wrong username and password'));
     } catch(Exception $e) {
       $this->redirect('/users/login?error='.urlencode('Wrong username and password'));
+    }
+  }
+
+  public function logout() {
+    if(Auth::logout()) {
+      redirect('/users/login');
     }
   }
 }

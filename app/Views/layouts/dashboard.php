@@ -1,5 +1,7 @@
 <?php
-  if(!isLoggedin()) {
+  use App\Helpers\Auth;
+
+  if(!Auth::isLoggedIn()) {
     redirect('/users/login');
   }
 ?>
@@ -21,6 +23,7 @@
         <li><a href="">Dashboard</a></li>
         <li><a href="">My Posts</a></li>
         <li><a href="">New Post</a></li>
+        <li><a href="/users/logout">Logout</a></li>
       </ul>
     </nav>
   </header>
@@ -39,7 +42,9 @@
     <?php endif; ?>
 
     <!-- Content will be injected here -->
-    <?php require_once __DIR__."/../$content_path.php"; ?>
+    <div class="page-content">
+      <?php require_once __DIR__."/../$content_path.php"; ?>
+    </div>
   </div>
 </body>
 </html>

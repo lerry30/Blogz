@@ -152,8 +152,8 @@ if(!function_exists('logger')) {
   }
 }
 
-if(!function_exists('isLoggedin')) {
-  function isLoggedin() {
+if(!function_exists('isLoggedIn')) {
+  function isLoggedIn() {
     return isset($_SESSION['user_id']) &&
            !empty($_SESSION['user_id']) &&
            is_numeric($_SESSION['user_id']);

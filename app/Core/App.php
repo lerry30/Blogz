@@ -11,21 +11,21 @@ class App {
   protected $params = [];
   protected $routes = [];
   protected $middleware = [];
-    
+
   /**
    * Constructor - Initialize the application
    */
   public function __construct() {
     // Load routes
     $this->loadRoutes();
-        
+
     // Parse the URL
     $url = $this->parseUrl();
-        
+
     // Route the request
     $this->routeRequest($url);
   }
-    
+
   /**
    * Load routes from the routes file
    */
@@ -33,14 +33,14 @@ class App {
     $routesFile = __DIR__ . '/../../routes/web.php';
     if(file_exists($routesFile)) {
       require_once $routesFile;
-            
+
       // Get routes defined in the routes file
       if(isset($routes) && is_array($routes)) {
         $this->routes = $routes;
       }
     }
   }
-    
+
   /**
    * Parse the URL into controller, method and parameters
    */
@@ -51,7 +51,7 @@ class App {
     }
     return [];
   }
-    
+
   /**
    * Route the request to the appropriate controller and method
    */
@@ -61,6 +61,7 @@ class App {
     $uri = strtok($uri, '?');  // Remove query string
     $requestMethod = $_SERVER['REQUEST_METHOD'];
     // Check for direct route match
+
     if(isset($this->routes[$requestMethod][$uri])) {
       $this->handleRouteMatch($this->routes[$requestMethod][$uri]);
         return;
@@ -98,20 +99,20 @@ class App {
                     $this->method = $url[1];
                     unset($url[1]);
                 }
-                
+
                 // Get parameters
                 $this->params = $url ? array_values($url) : [];
-                
+
                 // Call the controller method
                 call_user_func_array([$controller, $this->method], $this->params);
                 return;
             }
         }
-        
+
         // If we reach here, no route was matched
         $this->handleNotFound();
     }
-    
+
     /**
      * Handle a matched route
      */

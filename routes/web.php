@@ -21,6 +21,8 @@ $routes['POST']['/users'] = 'UserController@store';
 //login
 $routes['GET']['/users/login'] = 'UserController@login';
 $routes['POST']['/users/auth'] = 'UserController@auth';
+//logout
+$routes['GET']['/users/logout'] = 'UserController@logout';
 //dashboard
 $routes['GET']['/dashboards/user'] = 'DashboardController@user';
 

@@ -1,3 +1,11 @@
+<?php
+  use App\Helpers\Auth;
+
+  if(Auth::isLoggedIn()) {
+    redirect('dashboards/user');
+  }
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -33,7 +41,9 @@
     <?php endif; ?>
 
     <!-- Content will be injected here -->
-    <?php require_once __DIR__."/../$content_path.php"; ?>
+    <div class="page-content">
+      <?php require_once __DIR__."/../$content_path.php"; ?>
+    </div>
   </div>
 
   <!-- Footer -->

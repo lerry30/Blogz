@@ -85,3 +85,15 @@ header {
   padding: 0.6rem;
   background-color: #1115;
 }
+
+/* page content */
+
+.page-content {
+  padding: 1rem;
+}
+
+/* footer */
+
+footer {
+  padding: 1rem;
+}
