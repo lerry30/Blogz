@@ -1,29 +1,17 @@
 <?php
 namespace App\Models;
 
-class User extends Model
-{
-  /**
-   * The table associated with the model
-   *
-   * @var string
-   */
+class User extends Model {
   protected $table = 'users';
-
-  /**
-   * The primary key for the table
-   *
-   * @var string
-   */
   protected $primaryKey = 'id';
 
   /**
    * The attributes that are mass assignable
-   *
    * @var array
    */
   protected $fillable = [
-    'firstname', 'lastname', 'email', 'password'
+    'firstname', 'lastname', 'email', 'password',
+    'is_admin', 'role', 'status'
   ];
 
   /**
@@ -32,8 +20,7 @@ class User extends Model
    * @param string $email
    * @return array|false
    */
-  public function findByEmail($email)
-  {
+  public function findByEmail($email) {
     $stmt = $this->db->prepare("SELECT * FROM {$this->table} WHERE email = :email LIMIT 1");
     $stmt->bindParam(':email', $email);
     $stmt->execute();
@@ -47,10 +34,9 @@ class User extends Model
    * @param array $data
    * @return int|false The last insert ID or false on failure
    */
-  public function createUser($data)
-  {
+  public function createUser($data) {
     // Hash the password before storing
-    if (isset($data['password'])) {
+    if(isset($data['password'])) {
       $data['password'] = password_hash($data['password'], PASSWORD_BCRYPT, ['cost' => 12]);
     }
 
@@ -67,7 +53,7 @@ class User extends Model
   public function verifyCredentials($email, $password) {
     $user = $this->findByEmail($email);
 
-    if ($user && password_verify($password, $user['password'])) {
+    if($user && password_verify($password, $user['password'])) {
       // Remove sensitive data before returning
       unset($user['password']);
       return $user;
@@ -83,8 +69,7 @@ class User extends Model
    * @param string $newPassword
    * @return bool
    */
-  public function updatePassword($id, $newPassword)
-  {
+  public function updatePassword($id, $newPassword) {
     $hashedPassword = password_hash($newPassword, PASSWORD_BCRYPT, ['cost' => 12]);
 
     $stmt = $this->db->prepare("UPDATE {$this->table} SET password = :password WHERE {$this->primaryKey} = :id");

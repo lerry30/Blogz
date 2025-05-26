@@ -61,14 +61,20 @@ class UserController extends Controller {
 
       $model = new User();
       if(isset($model)) {
-        $model->createUser([
-          'firstname' => $fname,
-          'lastname' => $lname,
+        $id = $model->createUser([
+          'firstname' => ucwords($fname),
+          'lastname' => ucwords($lname),
           'email' => $email,
-          'password' => $password
+          'password' => $password,
+          'is_admin' => 0,
+          'role' => 'user',
+          'status' => 'active'
         ]);
+
+        $user = $model->find($id);
+        Auth::saveUserData($data);
       }
-      $this->redirect('/home?success=You\'re now successfully registered');
+      $this->redirect('/?success='.urlencode('You\'re now successfully registered'));
     } catch(InvalidArgumentException $e) {
       $this->redirect('/users/create?error=' . urlencode($e->getMessage()));
     } catch(Exception $e) {
@@ -111,16 +117,11 @@ class UserController extends Controller {
         throw new Exception('User not found');
       }
 
-      $_SESSION['user_id'] = $user['id'];
       if(isset($_POST['password'])) {
         unset($_POST['password']);
       }
 
-      $data = [
-        'firstname' => $user['firstname'],
-        'lastname' => $user['lastname'],
-        'email' => $user['email']
-      ];
+      Auth::saveUserData($user);
 
       $this->redirect('/dashboards/user');
     } catch(InvalidArgumentException $e) {

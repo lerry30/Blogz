@@ -3,6 +3,32 @@
 namespace App\Helpers;
 
 class Auth {
+  public static function saveUserData($user) {
+    $_SESSION['user_id'] = $user['id'];
+    $_SESSION['firstname'] = $user['firstname'];
+    $_SESSION['lastname'] = $user['lastname'];
+    $_SESSION['email'] = $user['email'];
+    $_SESSION['is_admin'] = $user['is_admin'];
+    $_SESSION['role'] = $user['role'];
+    $_SESSION['status'] = $user['status'];
+  }
+
+  public static function getUser() {
+    if(!self::isLoggedIn()) {
+      return null;
+    }
+
+    return [
+      'id' => $_SESSION['user_id'],
+      'firstname' => $_SESSION['firstname'],
+      'lastname' => $_SESSION['lastname'],
+      'email' => $_SESSION['email'],
+      'is_admin' => $_SESSION['is_admin'],
+      'role' => $_SESSION['role'],
+      'status' => $_SESSION['status']
+    ];
+  }
+
   public static function isLoggedIn() {
     return isset($_SESSION['user_id']) &&
            !empty($_SESSION['user_id']) &&
