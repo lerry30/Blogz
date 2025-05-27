@@ -16,6 +16,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">                                    <title><?= $title ?? 'Bolgz' ?></title>
   <link href="/assets/css/gen.css" rel="stylesheet">
   <link href="/assets/css/dashboard.css" rel="stylesheet">
+  <link href="/assets/css/categories.css" rel="stylesheet">
   <script type="module" src="/assets/js/layouts/dashboard.js" defer></script>
 </head>
 <body>
@@ -23,9 +24,9 @@
     <nav>
       <?php require_once __DIR__."/../components/logo.php"; ?>
       <ul class="slider close">
-        <li><a href="/dashboard/user">Dashboard</a></li>
+        <li><a href="/dashboards/user">Dashboard</a></li>
         <li><a href="">My Posts</a></li>
-        <li><a href="/posts/create">New Post</a></li>
+        <li><a href="/categories/create">New Post</a></li>
         <li><a href="/users/logout">Logout</a></li>
       </ul>
     </nav>

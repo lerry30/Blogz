@@ -159,3 +159,11 @@ if(!function_exists('isLoggedIn')) {
            is_numeric($_SESSION['user_id']);
   }
 }
+
+if(!function_exists('pr')) {
+  function pr($arr) {
+    echo '<pre>';
+    print_r($arr);
+    echo '</pre>';
+  }
+}

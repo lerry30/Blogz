@@ -63,10 +63,10 @@ class Model {
   {
     $stmt = $this->db->prepare("SELECT * FROM {$this->table}");
     $stmt->execute();
-    
+
     return $stmt->fetchAll();
   }
-  
+
   /**
    * Find a record by its primary key
    *
@@ -78,10 +78,10 @@ class Model {
     $stmt = $this->db->prepare("SELECT * FROM {$this->table} WHERE {$this->primaryKey} = :id");
     $stmt->bindParam(':id', $id);
     $stmt->execute();
-    
+
     return $stmt->fetch();
   }
-  
+
   /**
    * Create a new record
    *
@@ -92,23 +92,23 @@ class Model {
   {
     // Filter out non-fillable fields
     $filteredData = array_intersect_key($data, array_flip($this->fillable));
-    
+
     $columns = implode(', ', array_keys($filteredData));
     $placeholders = ':' . implode(', :', array_keys($filteredData));
-    
+
     $stmt = $this->db->prepare("INSERT INTO {$this->table} ({$columns}) VALUES ({$placeholders})");
-    
+
     foreach ($filteredData as $key => $value) {
         $stmt->bindValue(":{$key}", $value);
     }
-    
+
     if ($stmt->execute()) {
         return $this->db->lastInsertId();
     }
-    
+
     return false;
   }
-  
+
   /**
    * Update a record
    *
@@ -120,21 +120,21 @@ class Model {
   {
     // Filter out non-fillable fields
     $filteredData = array_intersect_key($data, array_flip($this->fillable));
-    
+
     $setClause = [];
     foreach (array_keys($filteredData) as $key) {
         $setClause[] = "{$key} = :{$key}";
     }
-    
+
     $setClause = implode(', ', $setClause);
-    
+
     $stmt = $this->db->prepare("UPDATE {$this->table} SET {$setClause} WHERE {$this->primaryKey} = :id");
     $stmt->bindParam(':id', $id);
-    
+
     foreach ($filteredData as $key => $value) {
         $stmt->bindValue(":{$key}", $value);
     }
-    
+
     return $stmt->execute();
   }
 

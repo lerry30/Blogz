@@ -1,3 +1,3 @@
-import slider from '../nav/slider.js';
+import slider from '../components/nav/slider.js';
 
 slider();

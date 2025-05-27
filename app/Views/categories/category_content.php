@@ -1,0 +1,17 @@
+<main>
+  <div>
+    <h4><?= $title ?></h4>
+  </div>
+  <div id="category-list" class="category-list">
+    <?php foreach($categories as $category): ?>
+      <div class="category-card <?= $category['is_active'] ? '' : 'inactive' ?>">
+        <h2><?= $category['name'] ?></h2>
+        <p><?= $category['description'] ??= 'No description available' ?></p>
+        <span class="post-count">
+          <?= $category['post_count'] ?> posts
+        </span>
+      </div>
+    <?php endforeach; ?>
+  </div>
+</main>
+<script src="/assets/js/pages/categories/index.js"></script>
