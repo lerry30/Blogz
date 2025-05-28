@@ -1,5 +1,5 @@
 <main>
-  <div>
+  <div class="cat-head flex-center">
     <h4><?= $title ?></h4>
   </div>
   <div id="category-list" class="category-list">
