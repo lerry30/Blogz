@@ -1,10 +1,5 @@
-import background from './parts/background.js';
+import background,{close} from './parts/background.js';
 import box from './parts/box.js';
-
-const close = () => {
-  const bg = document.getElementById('popup-modal');
-  bg.remove();
-}
 
 const warningModal = (
     title='',
@@ -54,7 +49,6 @@ const warningModal = (
   bx.append(mssg);
   bx.append(btnCont);
   bg.append(bx);
-  document.body.append(bg);
 }
 
 export default warningModal;
