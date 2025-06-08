@@ -49,8 +49,9 @@ class Model {
    *
    * @return array
    */
-  public function all() {
-    $stmt = $this->db->prepare("SELECT * FROM {$this->table}");
+  public function all($isDesc=false) {
+    $orderBy = $isDesc ? 'DESC' : 'ASC';
+    $stmt = $this->db->prepare("SELECT * FROM {$this->table} ORDER BY {$this->primaryKey} {$orderBy}");
     $stmt->execute();
 
     return $stmt->fetchAll();

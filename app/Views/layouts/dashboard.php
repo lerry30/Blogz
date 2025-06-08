@@ -34,15 +34,15 @@
     </nav>
   </header>
   <!-- Main Content -->
-  <div>
+  <div class="splash-cont">
     <?php if(isset($_GET['error'])): ?>
-      <div>
+      <div class="splash splash-error">
         <?= htmlspecialchars($_GET['error']) ?>
       </div>
     <?php endif; ?>
 
     <?php if(isset($_GET['success'])): ?>
-      <div>
+      <div class="splash splash-success">
         <?= htmlspecialchars($_GET['success']) ?>
       </div>
     <?php endif; ?>

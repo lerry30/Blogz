@@ -112,7 +112,7 @@ class PostController extends Controller {
     try {
       // query all user posts
       $postModel = new Post();
-      $blogPosts = $postModel->all();
+      $blogPosts = $postModel->all(true);
 
       $token = $this->generateCsrfToken();
       $data = [

@@ -95,6 +95,29 @@ footer {
   padding: 0.5rem;
 }
 
+/*=======≈======== SPLASH MESSAGE ================*/
+
+.splash-cont {
+  position: relative;
+}
+
+.splash {
+  padding: 0.2rem 0.4rem;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: calc(var(--sldr-z) - 1);
+}
+
+.splash-error {
+  background-color: #a00a;
+}
+
+.splash-success {
+  background-color: #07aa;
+}
+
 /*========≈======= CUSTOM CLASSES =================*/
 .text-red { color: red; }
 .col {
