@@ -1,10 +1,10 @@
 <?php
 /**
  * Application Routes
- * 
+ *
  * Define your routes here using the following format:
  * $routes['REQUEST_METHOD']['URI'] = 'Controller@method';
- * 
+ *
  * Example:
  * $routes['GET']['/'] = 'HomeController@index';
  * $routes['POST']['/users'] = 'UserController@store';
@@ -23,13 +23,44 @@ $routes['GET']['/users/login'] = 'UserController@login';
 $routes['POST']['/users/auth'] = 'UserController@auth';
 //logout
 $routes['GET']['/users/logout'] = 'UserController@logout';
+
 //dashboard
-$routes['GET']['/dashboards/user'] = 'DashboardController@user';
+$routes['GET']['/dashboards/user'] = [
+  'middleware' => 'auth',
+  'uses' => 'DashboardController@user'
+];
 
 //select category first then create post
-$routes['GET']['/categories/create'] = 'CategoryController@create';
+$routes['GET']['/categories/create'] = [
+  'middleware' => 'auth',
+  'uses' => 'CategoryController@create'
+];
 //posts
-$routes['GET']['/posts/create'] = 'PostController@create';
+$routes['GET']['/posts/create/{categoryId}'] = [
+  'middleware' => 'auth',
+  'uses' => 'PostController@create'
+];
+$routes['POST']['/posts'] = [
+  'middleware' => 'auth',
+  'uses' => 'PostController@store'
+];
+$routes['GET']['/posts/mypost'] = [
+  'middleware' => 'auth',
+  'uses' => 'PostController@myPost'
+];
+$routes['POST']['/posts/delete'] = [
+  'middleware' => 'auth',
+  'uses' => 'PostController@destroy'
+];
+//tags
+$routes['GET']['/tags/create/{postId}'] = [
+  'middleware' => 'auth',
+  'uses' => 'TagController@create'
+];
+$routes['POST']['/tags'] = [
+  'middleware' => 'auth',
+  'uses' => 'TagController@store'
+];
 
 // You can also define routes using closures for simple functionality
 //$routes['GET']['/hello'] = function() {

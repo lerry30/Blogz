@@ -76,9 +76,10 @@ class UserController extends Controller {
       }
       $this->redirect('/?success='.urlencode('You\'re now successfully registered'));
     } catch(InvalidArgumentException $e) {
-      $this->redirect('/users/create?error=' . urlencode($e->getMessage()));
+      $this->redirect('/users/create?error='.urlencode($e->getMessage()));
     } catch(Exception $e) {
-      $this->redirect('/users/create?error=' . urlencode($e->getMessage()));
+      error_log($e->getMessage());
+      $this->redirect('/users/create?error='.urlencode('Signup failed'));
     }
   }
 
@@ -133,7 +134,7 @@ class UserController extends Controller {
 
   public function logout() {
     if(Auth::logout()) {
-      redirect('/users/login');
+      $this->redirect('/users/login');
     }
   }
 }

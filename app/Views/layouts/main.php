@@ -19,7 +19,7 @@
 <body>
   <header>
     <nav>
-      <?php require_once __DIR__."/../components/logo.php"; ?>
+      <?php require_once getRoot()."/app/Views/components/logo.php"; ?>
       <ul class="slider close">
         <li><a href="/users/create">Signup</a></li>
         <li><a href="/users/login">Signin</a></li>
@@ -42,7 +42,7 @@
 
     <!-- Content will be injected here -->
     <div class="page-content">
-      <?php require_once __DIR__."/../$content_path.php"; ?>
+      <?php require_once getRoot()."/app/Views/$content_path.php"; ?>
     </div>
   </div>
 

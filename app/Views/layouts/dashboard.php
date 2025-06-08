@@ -15,17 +15,19 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">                                    <title><?= $title ?? 'Bolgz' ?></title>
   <link href="/assets/css/gen.css" rel="stylesheet">
-  <link href="/assets/css/dashboard.css" rel="stylesheet">
-  <link href="/assets/css/categories.css" rel="stylesheet">
+  <link href="/assets/css/<?= $css_file ?>.css" rel="stylesheet">
   <script type="module" src="/assets/js/layouts/dashboard.js" defer></script>
+  <?php if(isset($js_file)): ?>
+    <script type="module" src="/assets/js/pages/<?= ltrim($js_file, '/') ?>.js"></script>
+  <?php endif; ?>
 </head>
 <body>
   <header>
     <nav>
-      <?php require_once __DIR__."/../components/logo.php"; ?>
+      <?php require_once getRoot()."/app/Views/components/logo.php"; ?>
       <ul class="slider close">
         <li><a href="/dashboards/user">Dashboard</a></li>
-        <li><a href="">My Posts</a></li>
+        <li><a href="/posts/mypost">My Posts</a></li>
         <li><a href="/categories/create">New Post</a></li>
         <li><a href="/users/logout">Logout</a></li>
       </ul>
@@ -47,7 +49,7 @@
 
     <!-- Content will be injected here -->
     <div class="page-content">
-      <?php require_once __DIR__."/../$content_path.php"; ?>
+      <?php require_once getRoot()."/app/Views/$content_path.php"; ?>
     </div>
   </div>
 </body>

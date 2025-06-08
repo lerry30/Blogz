@@ -3,4 +3,4 @@
 $content_path = 'home/index_content';
 
 // Include the layout
-require_once __DIR__ . '/../layouts/main.php';
+require_once getRoot().'/app/Views/layouts/main.php';

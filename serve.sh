@@ -48,4 +48,7 @@ echo "Access your application at http://localhost:$PORT"
 echo "Press Ctrl+C to stop the server"
 
 # Start PHP development server
-php -S 0.0.0.0:$PORT -t public
+# php -S 0.0.0.0:$PORT -t public
+
+# with custom ini file
+php -c upload.ini -S 0.0.0.0:$PORT -t public

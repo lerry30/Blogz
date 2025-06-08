@@ -22,7 +22,7 @@ class CategoryController extends Controller {
 
       $this->view('categories/category', $data);
     } catch(Exception $e) {
-      redirect('/?error='.urlencode('Sorry, but this feature is not ready for now.'));
+      $this->redirect('/?error='.urlencode('Sorry, but this feature is not ready for now.'));
     }
   }
 }

@@ -45,13 +45,13 @@ return [
   // Cache configuration
   'cache' => [
     'driver' => 'file',
-    'path' => __DIR__ . '/../storage/cache',
+    'path' => getRoot().'/../storage/cache',
   ],
 
   // Logging configuration
   'logging' => [
     'channel' => $_ENV['LOG_CHANNEL'] ?: 'stack',
-    'path' => __DIR__ . '/../storage/logs/app.log',
+    'path' => getRoot().'/../storage/logs/app.log',
     'level' => $_ENV'LOG_LEVEL'] ?: 'debug',
   ],
 ];

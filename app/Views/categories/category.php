@@ -1,5 +1,6 @@
 <?php
 
 $content_path = 'categories/category_content';
+$css_file = 'categories';
 
-require_once __DIR__.'/../layouts/dashboard.php';
+require_once getRoot().'/app/Views/layouts/dashboard.php';

@@ -17,8 +17,8 @@ class Controller {
     extract($data);
 
     // Check if view exists
-    $viewFile = __DIR__.'/../Views/'.$view.'.php';
-    if (file_exists($viewFile)) {
+    $viewFile = getRoot().'/app/Views/'.$view.'.php';
+    if(file_exists($viewFile)) {
       // Start output buffering
       ob_start();
 
@@ -126,5 +126,18 @@ class Controller {
       $_SESSION['_token'] = bin2hex(random_bytes(32));
     }
     return $_SESSION['_token'];
+  }
+
+  /**
+    * Get file data from $_FILES superglobal
+    * @param string|null $key - The file input name
+    * @param mixed $default - Default value if key doesn't exist
+    * @return mixed - File data or default value
+    */
+  protected function files($key = null, $default = null) {
+    if($key === null) {
+      return $_FILES;
+    }
+    return isset($_FILES[$key]) ? $_FILES[$key] : $default;
   }
 }

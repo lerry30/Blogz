@@ -32,6 +32,8 @@ session_start([
   'use_strict_mode' => true
 ]);
 
+define('ROOT_PATH', dirname(__DIR__));
+
 // Load the core framework
 //require_once __DIR__ . '/../app/Core/App.php';
 //require_once __DIR__ . '/../app/Middleware/AuthMiddleware.php';

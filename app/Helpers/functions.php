@@ -167,3 +167,23 @@ if(!function_exists('pr')) {
     echo '</pre>';
   }
 }
+
+if(!function_exists('getRoot')) {
+  function getRoot() {
+    if(!ROOT_PATH || empty(ROOT_PATH)) {
+      return dirname(__DIR__, 2);
+    }
+    return ROOT_PATH;
+  }
+}
+
+if(!function_exists('deleteUploadedImage')) {
+  function deleteUploadedImage($file) {
+    $imgPath = getRoot().'/public/assets/img/uploads/'.$file;
+    if(file_exists($imgPath)) {
+      unlink($imgPath);
+      return true;
+    }
+    return false;
+  }
+}

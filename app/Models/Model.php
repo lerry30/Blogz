@@ -1,5 +1,8 @@
 <?php
+
 namespace App\Models;
+
+use App\Database\Database;
 
 /**
  * Base Model Class
@@ -38,20 +41,7 @@ class Model {
    * Constructor - Initialize database connection
    */
   public function __construct() {
-    try {
-      $config = require_once __DIR__ . '/../../config/database.php';
-
-      $dsn = "mysql:host={$config['host']};dbname={$config['database']};charset={$config['charset']}";
-      $options = [
-        \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION,
-        \PDO::ATTR_DEFAULT_FETCH_MODE => \PDO::FETCH_ASSOC,
-        \PDO::ATTR_EMULATE_PREPARES => false,
-      ];
-
-      $this->db = new \PDO($dsn, $config['username'], $config['password'], $options);
-    } catch (\PDOException $e) {
-      throw new \Exception("Database connection failed: " . $e->getMessage());
-    }
+    $this->db = Database::getConnection();
   }
 
   /**
@@ -59,8 +49,7 @@ class Model {
    *
    * @return array
    */
-  public function all()
-  {
+  public function all() {
     $stmt = $this->db->prepare("SELECT * FROM {$this->table}");
     $stmt->execute();
 
@@ -73,8 +62,7 @@ class Model {
    * @param mixed $id
    * @return array|false
    */
-  public function find($id)
-  {
+  public function find($id) {
     $stmt = $this->db->prepare("SELECT * FROM {$this->table} WHERE {$this->primaryKey} = :id");
     $stmt->bindParam(':id', $id);
     $stmt->execute();
@@ -88,25 +76,96 @@ class Model {
    * @param array $data
    * @return int|false The last insert ID or false on failure
    */
-  public function create($data)
-  {
+  public function create($data) {
     // Filter out non-fillable fields
     $filteredData = array_intersect_key($data, array_flip($this->fillable));
 
     $columns = implode(', ', array_keys($filteredData));
-    $placeholders = ':' . implode(', :', array_keys($filteredData));
+    $placeholders = ':'.implode(', :', array_keys($filteredData));
 
     $stmt = $this->db->prepare("INSERT INTO {$this->table} ({$columns}) VALUES ({$placeholders})");
 
-    foreach ($filteredData as $key => $value) {
-        $stmt->bindValue(":{$key}", $value);
+    foreach($filteredData as $key => $value) {
+      $stmt->bindValue(":{$key}", $value);
     }
 
-    if ($stmt->execute()) {
-        return $this->db->lastInsertId();
+    if($stmt->execute()) {
+      $lastId1 = $this->db->lastInsertId();
+//      $lastId2 = $this->db->lastInsertId($this->table); // Try with table name
+//      $affected = $stmt->rowCount();
+      return $lastId1;
     }
-
+//    error_log("Execute failed: " . print_r($stmt->errorInfo(), true));
     return false;
+  }
+
+  /**
+   * Create multi records
+   *
+   * @param array $data
+   * @return int|false The last insert ID or false on failure
+   */
+  public function createMulti($data) {
+    $filteredData = [];
+    foreach($data as $arr) {
+      // Filter out non-fillable fields
+      array_push(
+        $filteredData,
+        array_intersect_key($arr, array_flip($this->fillable))
+      );
+    }
+
+    $pivotCols = array_keys($filteredData[0]);
+    $columns = implode(', ', $pivotCols);
+    $prepCols = [];
+
+    for($i = 0; $i < count($filteredData); $i++) {
+      $rowPlaceholder = [];
+      foreach($pivotCols as $col) {
+        $rowPlaceholder[] = ":{$col}_{$i}";
+      }
+      array_push(
+        $prepCols,
+        implode(', ', $rowPlaceholder)
+      );
+    }
+
+    $placeholders = '('.implode('), (', $prepCols).')';
+    $stmt = $this->db->prepare("INSERT INTO {$this->table} ({$columns}) VALUES {$placeholders}");
+
+    foreach($filteredData as $index => $fData) {
+      foreach($pivotCols as $col) {
+        $stmt->bindValue(
+          ":{$col}_{$index}",
+          $fData[$col]
+        );
+      }
+    }
+
+    $insertedIds = [];
+
+    if($stmt->execute()) {
+      // Note: lastInsertId() only returns the ID of the first inserted row
+      // For multiple rows, you might need a different approach to get all IDs
+      $firstId = $this->db->lastInsertId();
+
+      // If you need all inserted IDs and your table has an auto-increment primary key
+      // you can calculate them (assuming no gaps in sequence):
+      for($i = 0; $i < count($filteredData); $i++) {
+        array_push($insertedIds, $firstId + $i);
+      }
+
+      return [
+        'success' => true,
+        'inserted_ids' => $insertedIds,
+        'count' => count($filteredData)
+      ];
+    }
+
+    return [
+      'success' => false,
+      'error' => 'Failed to execute statement'
+    ];
   }
 
   /**
@@ -116,13 +175,12 @@ class Model {
    * @param array $data
    * @return bool
    */
-  public function update($id, $data)
-  {
+  public function update($id, $data) {
     // Filter out non-fillable fields
     $filteredData = array_intersect_key($data, array_flip($this->fillable));
 
     $setClause = [];
-    foreach (array_keys($filteredData) as $key) {
+    foreach(array_keys($filteredData) as $key) {
         $setClause[] = "{$key} = :{$key}";
     }
 
@@ -131,7 +189,7 @@ class Model {
     $stmt = $this->db->prepare("UPDATE {$this->table} SET {$setClause} WHERE {$this->primaryKey} = :id");
     $stmt->bindParam(':id', $id);
 
-    foreach ($filteredData as $key => $value) {
+    foreach($filteredData as $key => $value) {
         $stmt->bindValue(":{$key}", $value);
     }
 
@@ -144,8 +202,7 @@ class Model {
    * @param mixed $id
    * @return bool
    */
-  public function delete($id)
-  {
+  public function delete($id) {
     $stmt = $this->db->prepare("DELETE FROM {$this->table} WHERE {$this->primaryKey} = :id");
     $stmt->bindParam(':id', $id);
     return $stmt->execute();
@@ -176,5 +233,23 @@ class Model {
     $stmt = $this->db->prepare($sql);
     $stmt->execute($params);
     return $stmt;
+  }
+
+  /**
+   * Query existing data base on given input
+   */
+  public function filter($field, $data) {
+    $placeholders = [];
+    $params = [];
+    foreach($data as $i => $item) {
+      $key = ":k{$item}{$i}";
+      $placeholders[] = $key;
+      $params[$key] = $item;
+    }
+
+    $sql = "SELECT * FROM {$this->table} WHERE {$field} IN (" . implode(',', $placeholders) . ")";
+    $stmt = $this->db->prepare($sql);
+    $stmt->execute($params);
+    return $stmt->fetchAll();
   }
 }
