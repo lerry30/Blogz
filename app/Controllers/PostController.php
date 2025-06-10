@@ -35,8 +35,11 @@ class PostController extends Controller {
 
       $this->view('post/newpost', $data);
     } catch(InvalidArgumentException $e) {
-      $this->redirect('/categories/create?error='.urlencode($e->getMessage()));
+      $mssg = $e->getMessage();
+      logger($mssg, 'Input Error');
+      $this->redirect('/categories/create?error='.urlencode($mssg));
     } catch(Exception $e) {
+      logger($e->getMessage(), 'Error');
       $this->redirect('/categories/create');
     }
   }
@@ -103,8 +106,11 @@ class PostController extends Controller {
 
       $this->redirect('/tags/create/'.$postId);
     } catch(InvalidArgumentException $e) {
-      $this->redirect('/posts/create/'.urlencode($categoryId)).'?error='.urlencode($e->getMessage());
+      $mssg = $e->getMessage();
+      logger($mssg, 'Input Error');
+      $this->redirect('/posts/create/'.urlencode($categoryId)).'?error='.urlencode($mssg);
     } catch(Exception $e) {
+      logger($e->getMessage(), 'Error');
       $this->redirect('/posts/create/'.urlencode($categoryId).'?error='.urlencode('Creating post failed'));
     }
   }
@@ -128,7 +134,7 @@ class PostController extends Controller {
 
       $this->view('post/mypost', $data);
     } catch(Exception $e) {
-      error_log($e->getMessage());
+      logger($e->getMessage(), 'Error');
       $this->redirect('/dashboards/user?error='.urlencode('Loading blog post failed'));
     }
   }
@@ -151,7 +157,7 @@ class PostController extends Controller {
       }
       throw new Exception('Archiving Post Failed');
     } catch(Exception $e) {
-      error_log('Can\'t process the post to archive: '.$e->getMessage());
+      logger($e->getMessage(), 'Error');
       $this->redirect('/posts/mypost?error='.urlencode('Archiving post failed'));
     }
   }
@@ -174,6 +180,7 @@ class PostController extends Controller {
 
       $this->view('/post/archived', $data);
     } catch(Exception $e) {
+      logger($e->getMessage());
       $this->redirect('/dashboards/user?error='.urlencode('Can\'t access archive.'));
     }
   }
@@ -196,7 +203,7 @@ class PostController extends Controller {
       }
       throw new Exception('Unable to unarchive blog post');
     } catch(Exception $e) {
-      error_log('Error: Unable to unarchive the blog post'.$e);
+      logger($e->getMessage(), 'Error');
       $this->redirect('/posts/myarchived?error='.urlencode('Failed to unarchive blog post'));
     }
   }
@@ -219,6 +226,7 @@ class PostController extends Controller {
       }
       throw new Exception('Blog post deletion failed');
     } catch(Exception $e) {
+      logger($e->getMessage(), 'Error');
       $this->redirect('/posts/myarchived?error='.urlencode('Deleting blog post failed'));
     }
   }

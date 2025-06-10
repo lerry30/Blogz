@@ -239,17 +239,23 @@ class Model {
   /**
    * Query existing data base on given input
    */
-  public function filter($field, $data, $isDesc=false) {
+  public function filter($field, $data, $isDesc = false) {
+    if(empty($data))
+      return [];
+
     $placeholders = [];
     $params = [];
+
     foreach($data as $i => $item) {
-      $key = ":k{$item}{$i}";
+      $key = ":param_{$i}";
       $placeholders[] = $key;
       $params[$key] = $item;
     }
 
     $orderBy = $isDesc ? 'DESC' : 'ASC';
-    $sql = "SELECT * FROM {$this->table} WHERE {$field} IN (" . implode(',', $placeholders) . ") ORDER BY {$this->primaryKey} {$orderBy};";
+    $sql = "SELECT * FROM {$this->table} WHERE {$field} IN (" . 
+           implode(',', $placeholders) . ") ORDER BY {$this->primaryKey} {$orderBy}";
+
     $stmt = $this->db->prepare($sql);
     $stmt->execute($params);
     return $stmt->fetchAll();

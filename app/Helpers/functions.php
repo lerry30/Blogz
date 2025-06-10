@@ -143,7 +143,7 @@ if(!function_exists('logger')) {
    * @return void
    */
   function logger($message, $level = 'info') {
-    $logFile = __DIR__.'/../../storage/logs/app.log';
+    $logFile = getRoot().'/storage/logs/app.log';
     $timestamp = date('Y-m-d H:i:s');
 
     $logMessage = "[{$timestamp}] ".strtoupper($level).": {$message}".PHP_EOL;

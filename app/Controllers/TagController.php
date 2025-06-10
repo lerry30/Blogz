@@ -27,6 +27,7 @@ class TagController extends Controller {
 
       $this->view('tag/add', $data);
     } catch(Exception $e) {
+      logger($e->getMessage(), 'Error');
       $this->redirect('/post/mypost');
     }
   }
@@ -68,15 +69,18 @@ class TagController extends Controller {
       }
 
       $result = $blogPostTag->createMulti($blogPost);
+
       if($result['success']) {
         $this->redirect('/posts/mypost?success='.urlencode('Successfully saved blog post tags'));
       } else {
         $this->redirect('/posts/mypost?error='.urlencode('Saving blog post tags failed'));
       }
     } catch(InvalidArgumentException $e) {
-      $this->redirect('/posts/mypost?error='.$e->getMessage());
+      $mssg = $e->getMessage();
+      logger($mssg, 'Error');
+      $this->redirect('/posts/mypost?error='.$mssg);
     } catch(Exception $e) {
-      //error_log($e->getMessage());
+      logger($e->getMessage(), 'Error');
       $this->redirect('/posts/mypost?error='.urlencode('Saving post failed'));
     }
   }
