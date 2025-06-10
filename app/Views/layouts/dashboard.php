@@ -29,6 +29,7 @@
         <li><a href="/dashboards/user">Dashboard</a></li>
         <li><a href="/posts/mypost">My Posts</a></li>
         <li><a href="/categories/create">New Post</a></li>
+        <li><a href="/posts/myarchived">Archive</a></li>
         <li><a href="/users/logout">Logout</a></li>
       </ul>
     </nav>

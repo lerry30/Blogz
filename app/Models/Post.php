@@ -45,12 +45,4 @@ class Post extends Model {
 
     return $this->create($data);
   }
-
-  public function removeBlogPost($postId) {
-    $userId = Auth::getUser()['id'];
-    $stmt = $this->db->prepare("DELETE FROM {$this->table} WHERE id = :postId AND user_id = :userId");
-    $stmt->bindParam(':postId', $postId);
-    $stmt->bindParam(':userId', $userId);
-    return $stmt->execute();
-  }
 }

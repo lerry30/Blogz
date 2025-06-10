@@ -3,8 +3,7 @@
     <h4><?= $title ?></h4>
   </div>
   <div class="card-cont">
-    <?php foreach($blog_posts as $post): ?>
-      <?php $isPublished = strtolower($post['status']) == 'published'; ?>
+    <?php foreach($archived_blog_posts as $post): ?>
       <div class="card">
         <img
           src="/assets/img/uploads/<?= $post['featured_image'] ?>"
@@ -20,21 +19,24 @@
         </article>
         <p><?= $post['excerpt'] ?></p>
         <div class="btn-cont">
-          <a href="" class="btn btn-gray">Edit</a>
-          <?php if($isPublished): ?>
-            <a href="" class="btn btn-gray">View</a>
-          <?php else:?>
-            <a href="" class="btn">Publish</a>
-          <?php endif; ?>
+          <a href="" class="btn btn-gray">View</a>
           <form
-            action="/posts/archive"
+            action="/posts/unarchive"
             method="post"
-            class="arch-post"
+          >
+            <input type="hidden" name="_token" value="<?= $csrf_token; ?>" />
+            <input type="hidden" name="post" value="<?= $post['id'] ?>" />
+            <button class="btn btn-gray">Unarchive</button>
+          </form>
+          <form
+            action="/posts/delete"
+            method="post"
+            class="del-post"
           >
             <input type="hidden" name="_token" value="<?= $csrf_token ?>" />
             <input type="hidden" name="post" value="<?= $post['id'] ?>" />
-            <button class="btn btn-red">
-              Archive
+            <button type="button" class="btn btn-red">
+              Delete
             </button>
           </form>
         </div>

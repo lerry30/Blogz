@@ -48,6 +48,18 @@ $routes['GET']['/posts/mypost'] = [
   'middleware' => 'auth',
   'uses' => 'PostController@myPost'
 ];
+$routes['POST']['/posts/archive'] = [
+  'middleware' => 'auth',
+  'uses' => 'PostController@archive'
+];
+$routes['GET']['/posts/myarchived'] = [
+  'middleware' => 'auth',
+  'uses' => 'PostController@myArchived'
+];
+$routes['POST']['/posts/unarchive'] = [
+  'middleware' => 'auth',
+  'uses' => 'PostController@unarchive'
+];
 $routes['POST']['/posts/delete'] = [
   'middleware' => 'auth',
   'uses' => 'PostController@destroy'

@@ -7,6 +7,7 @@ use App\Models\Category;
 use App\Helpers\InputValidator;
 use App\Helpers\Auth;
 use App\Helpers\FileUpload;
+use App\Services\PostService;
 use InvalidArgumentException;
 use Exception;
 
@@ -112,7 +113,11 @@ class PostController extends Controller {
     try {
       // query all user posts
       $postModel = new Post();
-      $blogPosts = $postModel->all(true);
+      $blogPosts = $postModel->filter(
+        'status',
+        ['draft', 'pending_review', 'approved', 'published'],
+        true
+      );
 
       $token = $this->generateCsrfToken();
       $data = [
@@ -128,6 +133,74 @@ class PostController extends Controller {
     }
   }
 
+  public function archive() {
+    try {
+      if(!$this->verifyCsrf()) {
+        die('Csrf validation failed');
+      }
+
+      $postId = trim($this->post('post'));
+      $postId = InputValidator::validateInteger($postId);
+
+      $postSrv = new PostService();
+      $result = $postSrv->archive($postId);
+
+      if($result) {
+        $this->redirect('/posts/mypost?success='.urlencode('Archived Blog Post done'));
+        exit;
+      }
+      throw new Exception('Archiving Post Failed');
+    } catch(Exception $e) {
+      error_log('Can\'t process the post to archive: '.$e->getMessage());
+      $this->redirect('/posts/mypost?error='.urlencode('Archiving post failed'));
+    }
+  }
+
+  public function myArchived() {
+    try {
+      $postModel = new Post();
+      $archivedPosts = $postModel->filter(
+        'status',
+        ['rejected', 'archived'],
+        true
+      );
+
+      $token = $this->generateCsrfToken();
+      $data = [
+        'title' => 'Archive',
+        'csrf_token' => $token,
+        'archived_blog_posts' => $archivedPosts
+      ];
+
+      $this->view('/post/archived', $data);
+    } catch(Exception $e) {
+      $this->redirect('/dashboards/user?error='.urlencode('Can\'t access archive.'));
+    }
+  }
+
+  public function unarchive() {
+    try {
+      if(!$this->verifyCsrf()) {
+        die('Csrf validation failed');
+      }
+
+      $postId = trim($this->post('post'));
+      $postId = InputValidator::validateInteger($postId);
+
+      $postSrv = new PostService();
+      $result = $postSrv->unarchive($postId);
+
+      if($result) {
+        $this->redirect('/posts/myarchived?success='.urlencode('Successfully unarchived blog post'));
+        exit;
+      }
+      throw new Exception('Unable to unarchive blog post');
+    } catch(Exception $e) {
+      error_log('Error: Unable to unarchive the blog post'.$e);
+      $this->redirect('/posts/myarchived?error='.urlencode('Failed to unarchive blog post'));
+    }
+  }
+
   public function destroy() {
     try {
       if(!$this->verifyCsrf()) {
@@ -137,18 +210,16 @@ class PostController extends Controller {
       $postId = trim($this->post('post'));
       $postId = InputValidator::validateInteger($postId);
 
-      $postModel = new Post();
-      $postData = $postModel->find($postId);
-      $fImage = $postData['featured_image'];
-      $result = $postModel->removeBlogPost($postId);
-      if($result) {
+      $postSrv = new PostService();
+      $fImage = $postSrv->removeBlogPost($postId);
+      if(!empty($fImage)) {
         deleteUploadedImage($fImage);
-        $this->redirect('/posts/mypost?success='.urlencode('Successfully deleted post'));
+        $this->redirect('/posts/myarchived?success='.urlencode('Successfully deleted post'));
         exit();
       }
       throw new Exception('Blog post deletion failed');
     } catch(Exception $e) {
-      $this->redirect('/posts/mypost?error='.urlencode('Deleting blog post failed'));
+      $this->redirect('/posts/myarchived?error='.urlencode('Deleting blog post failed'));
     }
   }
 }
