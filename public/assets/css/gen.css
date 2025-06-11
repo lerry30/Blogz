@@ -39,11 +39,13 @@ button, input, textarea {
   font-size: 1rem;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  outline: none;
 }
 
 header {
   width: 100%;
-  height: var(--hdr-h);
+  max-height: var(--hdr-h);
+  height: var(--hdr-h);;
   background-color: var(--com-color);
 }
 
@@ -93,6 +95,16 @@ header {
 
 footer {
   padding: 0.5rem;
+}
+
+/* empty list */
+
+.empty-list {
+  width: 100%;
+  height: calc(80vh - var(--hdr-h)); /* 50px for the title */
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 /*=======≈======== SPLASH MESSAGE ================*/

@@ -3,6 +3,11 @@
     <h4><?= $title ?></h4>
   </div>
   <div class="card-cont">
+    <?php if(!isset($archived_blog_posts) || empty($archived_blog_posts)  || count($archived_blog_posts) == 0): ?>
+      <div class="empty-list">
+        <h3>Empty</h3>
+      </div>
+    <?php endif ?>
     <?php foreach($archived_blog_posts as $post): ?>
       <div class="card">
         <img

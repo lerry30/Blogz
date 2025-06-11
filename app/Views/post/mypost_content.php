@@ -3,6 +3,11 @@
     <h4><?= $title ?></h4>
   </div>
   <div class="card-cont">
+    <?php if(!isset($blog_posts) || empty($blog_posts) || count($blog_posts) == 0): ?>
+      <div class="empty-list">
+        <h3>No blog post found</h3>
+      </div>
+    <?php endif; ?>
     <?php foreach($blog_posts as $post): ?>
       <?php $isPublished = strtolower($post['status']) == 'published'; ?>
       <div class="card">
